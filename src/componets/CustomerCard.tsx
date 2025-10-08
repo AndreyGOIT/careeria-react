@@ -77,7 +77,11 @@ const CustomerCard = ({ customer, onDelete }: CustomerCardProps) => {
                 {customer.fax}
               </p>
             )}
-            <button onClick={handleDelete} disabled={isDeleting}>
+            <button
+              className="customer-card-btn"
+              onClick={handleDelete}
+              disabled={isDeleting}
+            >
               {isDeleting ? "Deleting..." : "Delete"}
             </button>
           </div>

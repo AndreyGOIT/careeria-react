@@ -11,6 +11,7 @@ const CustomerList = () => {
   const [show, setShow] = useState(false);
   // state to trigger re-fetching of customers
   const [x, reload] = useState(false);
+  const [search, setSearch] = useState("");
 
   // Fetch customers on component mount
   useEffect(() => {
@@ -29,17 +30,37 @@ const CustomerList = () => {
       </h2>
       <p className="customer-list-subtitle">press title</p>
       <CustomerAdd x={x} reload={reload} />
+
+      {/* Search input - functionality not implemented yet */}
+      <input
+        type="text"
+        placeholder="Search by company name..."
+        className="customer-search-input"
+        value={search}
+        onChange={({ target }) => setSearch(target.value)}
+      />
       <hr />
       {show && (
         <div className="customer-list-grid">
           {customers &&
-            customers.map((c: Customer) => (
-              <CustomerCard
-                key={c.customerId}
-                customer={c}
-                onDelete={() => reload(!x)} // перезапрашивает данные
-              />
-            ))}
+            customers.map((c: Customer) => {
+              if (
+                c.companyName.toLowerCase().indexOf(search.toLowerCase()) === -1
+              ) {
+                return null; // не отображать, если не совпадает с поиском
+              }
+
+              if (c.companyName.toLowerCase().includes(search.toLowerCase())) {
+                console.log("Found:", c.companyName);
+                return (
+                  <CustomerCard
+                    key={c.customerId}
+                    customer={c}
+                    onDelete={() => reload(!x)} // перезапрашивает данные
+                  />
+                );
+              }
+            })}
         </div>
       )}
     </>
