@@ -2,7 +2,16 @@ import { useState } from "react";
 import "../styles/CustomerAdd.css";
 import CustomerService from "../services/CustomerService";
 
-const CustomerAdd = () => {
+import type { Dispatch, SetStateAction } from "react";
+
+interface CustomerAddProps {
+  x: boolean;
+  reload: Dispatch<SetStateAction<boolean>>;
+}
+
+const CustomerAdd: React.FC<CustomerAddProps> = ({ x, reload }) => {
+  // component logic
+
   const [showForm, setShowForm] = useState(false);
   // component state
   const [customerId, setCustomerId] = useState("");
@@ -36,7 +45,7 @@ const CustomerAdd = () => {
     };
     try {
       const response = await CustomerService.create(newCustomer);
-      console.log("Customer added:", response.data);
+      console.log("Customer added:", response);
       // reset form fields
       setCustomerId("");
       setCompanyName("");
@@ -53,7 +62,8 @@ const CustomerAdd = () => {
       console.error("Error adding customer:", error);
     }
     setShowForm(false); // hide form after submission
-    window.location.reload(); // reload the page to show the new customer in the list (temporary solution)
+    reload(!x); // trigger re-fetching of customers in parent component
+    // window.location.reload(); // reload the page to show the new customer in the list (temporary solution)
   };
 
   return (

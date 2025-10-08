@@ -9,6 +9,8 @@ import CustomerAdd from "./CustomerAdd";
 const CustomerList = () => {
   const [customers, setCustomers] = useState([]);
   const [show, setShow] = useState(false);
+  // state to trigger re-fetching of customers
+  const [x, reload] = useState(false);
 
   // Fetch customers on component mount
   useEffect(() => {
@@ -17,7 +19,7 @@ const CustomerList = () => {
       .catch((error) => {
         console.error("Error fetching customers:", error);
       });
-  }, []);
+  }, [x]);
 
   return (
     <>
@@ -26,13 +28,17 @@ const CustomerList = () => {
         Customers
       </h2>
       <p className="customer-list-subtitle">press title</p>
-      <CustomerAdd />
+      <CustomerAdd x={x} reload={reload} />
       <hr />
       {show && (
         <div className="customer-list-grid">
           {customers &&
             customers.map((c: Customer) => (
-              <CustomerCard key={c.id} customer={c} />
+              <CustomerCard
+                key={c.customerId}
+                customer={c}
+                onDelete={() => reload(!x)} // перезапрашивает данные
+              />
             ))}
         </div>
       )}

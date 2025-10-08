@@ -16,13 +16,27 @@ export interface Customer {
   fax: string | null;
 }
 
+// Fetch all customers
+// use: CustomerService.getAll().then(data => ...)
 const getAll = () => {
   const requestOptions = axios.get(baseUrl);
   return requestOptions.then((response) => response.data);
 };
 
+// Create a new customer
+// use: CustomerService.create(newCustomer).then(response => ...)
 const create = (newCustomer: Customer) => {
-  return axios.post(baseUrl, newCustomer);
+  const requestOptions = axios.post(baseUrl, newCustomer);
+
+  return requestOptions.then((response) => response.data);
 };
 
-export default { getAll, create };
+// Delete a customer by ID
+// use: CustomerService.remove(customerId).then(response => ...)
+const remove = (customerId: string) => {
+  const requestOptions = axios.delete(`${baseUrl}/${customerId}`);
+
+  return requestOptions.then((response) => response.data);
+}
+
+export default { getAll, create, remove };
