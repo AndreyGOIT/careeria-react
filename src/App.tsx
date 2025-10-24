@@ -2,8 +2,6 @@ import { useState } from "react";
 import "./App.css";
 import CustomerList from "./componets/CustomerList.tsx";
 import Message from "./Message.tsx";
-// import Laskuri from "./componets/Laskuri.tsx";
-// import Events from "./componets/Events.tsx";
 
 const App = () => {
   // Example state for message component
@@ -18,8 +16,7 @@ const App = () => {
       <h1 className="title-center">
         React + Vite <span className="highlight">/ .NET Core API</span>
       </h1>
-      {/* <Laskuri /> */}
-      {/* <Events otsikko={"Coming events"} /> */}
+
       {showMessage && <Message message={message} isPositive={isPositive} />}
       <CustomerList
         setMessage={setMessage}

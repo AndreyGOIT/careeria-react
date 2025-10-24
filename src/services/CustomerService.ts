@@ -35,6 +35,18 @@ const create = (newCustomer: Customer) => {
   return requestOptions.then((response) => response.data);
 };
 
+// Edit an existing customer
+// use: CustomerService.update(customerId, updatedCustomer).then(response => ...)
+const update = (customerId: string, updatedCustomer: Customer) => {
+  const requestOptions = axios.put(`${baseUrl}/${customerId}`, updatedCustomer, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+  return requestOptions.then((response) => response.data);
+};
+
 // Delete a customer by ID
 // use: CustomerService.remove(customerId).then(response => ...)
 const remove = (customerId: string) => {
@@ -43,4 +55,4 @@ const remove = (customerId: string) => {
   return requestOptions.then((response) => response.data);
 }
 
-export default { getAll, create, remove };
+export default { getAll, create, update, remove };

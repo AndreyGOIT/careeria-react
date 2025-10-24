@@ -6,10 +6,15 @@ interface CustomerCardProps {
   customer: CustomerType;
   // onDelete: () => void;
   onDeleteRequest: (customer: CustomerType) => void;
+  onEditRequest: (customer: CustomerType) => void;
 }
 
 // Receive customer as prop and display its details
-const CustomerCard = ({ customer, onDeleteRequest }: CustomerCardProps) => {
+const CustomerCard = ({
+  customer,
+  onDeleteRequest,
+  onEditRequest,
+}: CustomerCardProps) => {
   const [showDetails, setShowDetails] = useState(false);
   // const [isDeleting, setIsDeleting] = useState(false);
 
@@ -78,6 +83,12 @@ const CustomerCard = ({ customer, onDeleteRequest }: CustomerCardProps) => {
                 {customer.fax}
               </p>
             )}
+            <button
+              className="customer-card-btn-edit"
+              onClick={() => onEditRequest(customer)}
+            >
+              Edit
+            </button>
             <button
               className="customer-card-btn"
               // onClick={handleDelete}

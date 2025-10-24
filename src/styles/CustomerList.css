@@ -72,6 +72,19 @@
 .customer-card-btn:hover {
   background-color: #c0392b;
 }
+.customer-card-btn-edit {
+  margin-top: 10px;
+  margin-right: 10px;
+  background-color: #4caf50;
+  color: white;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.customer-card-btn-edit:hover {
+  background-color: #388e3c;
+}
 .customer-search-input {
   width: 100%;
   max-width: 400px;

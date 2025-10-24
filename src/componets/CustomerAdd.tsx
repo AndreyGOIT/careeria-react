@@ -80,7 +80,7 @@ const CustomerAdd: React.FC<CustomerAddProps> = ({
       setTimeout(() => setShowMessage(false), 6000);
     }
 
-    // сброс формы
+    // reset form fields
     setCustomerId("");
     setCompanyName("");
     setContactName("");
@@ -100,102 +100,104 @@ const CustomerAdd: React.FC<CustomerAddProps> = ({
         (+) Adding new customer
       </h3>
       {showForm && (
-        <>
-          <hr />
-          <form className="customer-add-form" onSubmit={formSubmit}>
-            <div>
-              <label>Customer ID:</label>
-              <input
-                type="text"
-                value={customerId}
-                onChange={(e) => setCustomerId(e.target.value)}
-              />
-            </div>
-            <div>
-              <label>Company Name:</label>
-              <input
-                type="text"
-                value={companyName}
-                onChange={(e) => setCompanyName(e.target.value)}
-              />
-            </div>
-            <div>
-              <label>Contact Name:</label>
-              <input
-                type="text"
-                value={contactName}
-                onChange={(e) => setContactName(e.target.value)}
-              />
-            </div>
-            <div>
-              <label>Contact Title:</label>
-              <input
-                type="text"
-                value={contactTitle}
-                onChange={(e) => setContactTitle(e.target.value)}
-              />
-            </div>
-            <div>
-              <label>Address:</label>
+        <div className="modal-overlay">
+          <div className="modal">
+            <form className="customer-add-form" onSubmit={formSubmit}>
+              <div>
+                <label>Customer ID:</label>
+                <input
+                  type="text"
+                  value={customerId}
+                  onChange={(e) => setCustomerId(e.target.value)}
+                />
+              </div>
+              <div>
+                <label>Company Name:</label>
+                <input
+                  type="text"
+                  value={companyName}
+                  onChange={(e) => setCompanyName(e.target.value)}
+                />
+              </div>
+              <div>
+                <label>Contact Name:</label>
+                <input
+                  type="text"
+                  value={contactName}
+                  onChange={(e) => setContactName(e.target.value)}
+                />
+              </div>
+              <div>
+                <label>Contact Title:</label>
+                <input
+                  type="text"
+                  value={contactTitle}
+                  onChange={(e) => setContactTitle(e.target.value)}
+                />
+              </div>
+              <div>
+                <label>Address:</label>
 
-              <input
-                type="text"
-                value={address}
-                onChange={(e) => setAddress(e.target.value)}
-              />
-            </div>
-            <div>
-              <label>City:</label>
-              <input
-                type="text"
-                value={city}
-                onChange={(e) => setCity(e.target.value)}
-              />
-            </div>
-            <div>
-              <label>Region:</label>
-              <input
-                type="text"
-                value={region}
-                onChange={(e) => setRegion(e.target.value)}
-              />
-            </div>
-            <div>
-              <label>Postal Code:</label>
-              <input
-                type="text"
-                value={postalCode}
-                onChange={(e) => setPostalCode(e.target.value)}
-              />
-            </div>
-            <div>
-              <label>Country:</label>
-              <input
-                type="text"
-                value={country}
-                onChange={(e) => setCountry(e.target.value)}
-              />
-            </div>
-            <div>
-              <label>Phone:</label>
-              <input
-                type="text"
-                value={phone}
-                onChange={(e) => setPhone(e.target.value)}
-              />
-            </div>
-            <div>
-              <label>Fax:</label>
-              <input
-                type="text"
-                value={fax}
-                onChange={(e) => setFax(e.target.value)}
-              />
-            </div>
-            <button type="submit">Add Customer</button>{" "}
-            <button onClick={() => setShowForm(!showForm)}>Cancel</button>
-          </form>
-        </>
+                <input
+                  type="text"
+                  value={address}
+                  onChange={(e) => setAddress(e.target.value)}
+                />
+              </div>
+              <div>
+                <label>City:</label>
+                <input
+                  type="text"
+                  value={city}
+                  onChange={(e) => setCity(e.target.value)}
+                />
+              </div>
+              <div>
+                <label>Region:</label>
+                <input
+                  type="text"
+                  value={region}
+                  onChange={(e) => setRegion(e.target.value)}
+                />
+              </div>
+              <div>
+                <label>Postal Code:</label>
+                <input
+                  type="text"
+                  value={postalCode}
+                  onChange={(e) => setPostalCode(e.target.value)}
+                />
+              </div>
+              <div>
+                <label>Country:</label>
+                <input
+                  type="text"
+                  value={country}
+                  onChange={(e) => setCountry(e.target.value)}
+                />
+              </div>
+              <div>
+                <label>Phone:</label>
+                <input
+                  type="text"
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                />
+              </div>
+              <div>
+                <label>Fax:</label>
+                <input
+                  type="text"
+                  value={fax}
+                  onChange={(e) => setFax(e.target.value)}
+                />
+              </div>
+              <br />
+              <button type="submit">Add Customer</button>{" "}
+              <button onClick={() => setShowForm(!showForm)}>Cancel</button>
+            </form>
+          </div>
+        </div>
       )}
     </>
   );

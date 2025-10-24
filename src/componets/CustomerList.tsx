@@ -6,6 +6,7 @@ import CustomerCard from "./CustomerCard";
 import CustomerAdd from "./CustomerAdd";
 
 import type { Dispatch, SetStateAction } from "react";
+import CustomerEdit from "./CustomerEdit";
 
 interface CustomerListProps {
   setMessage: Dispatch<SetStateAction<string>>;
@@ -28,6 +29,14 @@ const CustomerList: React.FC<CustomerListProps> = ({
   const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(
     null
   );
+  const [editingCustomer, setEditingCustomer] = useState<Customer | null>(null);
+  const [showEditModal, setShowEditModal] = useState(false);
+
+  const handleEditRequest = (customer: Customer) => {
+    setEditingCustomer(customer);
+    console.log("Editing customer: ", customer);
+    setShowEditModal(true);
+  };
 
   const handleDeleteRequest = (customer: Customer) => {
     setSelectedCustomer(customer);
@@ -83,6 +92,7 @@ const CustomerList: React.FC<CustomerListProps> = ({
         onChange={({ target }) => setSearch(target.value)}
       />
       <hr />
+      {/* customers list */}
       {show && (
         <div className="customer-list-grid">
           {customers &&
@@ -99,7 +109,7 @@ const CustomerList: React.FC<CustomerListProps> = ({
                   <CustomerCard
                     key={c.customerId}
                     customer={c}
-                    // onDelete={() => reload(!x)} // перезапрашивает данные
+                    onEditRequest={handleEditRequest}
                     onDeleteRequest={handleDeleteRequest}
                   />
                 );
@@ -108,6 +118,20 @@ const CustomerList: React.FC<CustomerListProps> = ({
         </div>
       )}
 
+      {/* Edit Modal */}
+      {showEditModal && editingCustomer && (
+        <CustomerEdit
+          customer={editingCustomer}
+          x={x}
+          reload={reload}
+          setMessage={setMessage}
+          setShowMessage={setShowMessage}
+          setIsPositive={setIsPositive}
+          onClose={() => setShowEditModal(false)}
+        />
+      )}
+
+      {/* Confirmation Modal */}
       {showConfirm && (
         <div className="modal-overlay">
           <div className="modal">
