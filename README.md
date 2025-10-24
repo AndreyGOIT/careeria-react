@@ -1,73 +1,48 @@
-# React + TypeScript + Vite
+# NorthwindVite
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This is a **React + TypeScript + Vite** learning project created as part of the course "React.js Application Development".  
+The project demonstrates working with components, forms, Axios requests to an API, and state management in React.
 
-Currently, two official plugins are available:
+## 📦 Technologies
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **React 18** — for building user interfaces.
+- **TypeScript** — for type safety and more reliable code.
+- **Vite** — fast development server and build tool with HMR.
+- **Axios** — for HTTP requests.
+- **ESLint + Prettier** — for code linting and formatting.
 
-## React Compiler
+## 🚀 Project Structure
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- `src/components` — React components (e.g., `CustomerList`, `CustomerAdd`).
+- `src/services` — API interaction using Axios.
+- `src/App.tsx` — root component of the application.
+- `public/` — static files (favicon, icons, etc.).
 
-## Expanding the ESLint configuration
+## 🔧 How to Run
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+1. Install dependencies:
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+```bash
+npm install
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+	2.	Start the development server:
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+npm run dev
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+	3.	Open the project in your browser at http://localhost:5173.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+💻 Project Features
+	•	Adding, viewing, and filtering customers.
+	•	Interactive forms with validation.
+	•	Communication with server-side API (ASP.NET or other implementation).
+	•	Displaying success/error messages after operations.
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+📚 Purpose
+
+The project is intended to reinforce skills in:
+	•	Working with React + TypeScript.
+	•	Organizing components and managing state.
+	•	Integrating a frontend application with a server-side API.
+	•	Debugging and handling HTTP request errors.
+
 ```
