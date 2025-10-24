@@ -53,3 +53,15 @@
 .title-center .highlight {
   color: #2e9628;
 }
+.message-positive {
+  text-align: center;
+  color: green;
+  font-weight: bold;
+  margin: 20px 0;
+}
+.message-negative {
+  text-align: center;
+  color: red;
+  font-weight: bold;
+  margin: 20px 0;
+}

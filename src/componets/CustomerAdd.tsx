@@ -1,15 +1,26 @@
 import { useState } from "react";
 import "../styles/CustomerAdd.css";
 import CustomerService from "../services/CustomerService";
+import type { AxiosError } from "axios";
 
 import type { Dispatch, SetStateAction } from "react";
+import type { Customer } from "../types/CustomerType";
 
 interface CustomerAddProps {
   x: boolean;
   reload: Dispatch<SetStateAction<boolean>>;
+  setMessage: Dispatch<SetStateAction<string>>;
+  setShowMessage: Dispatch<SetStateAction<boolean>>;
+  setIsPositive: Dispatch<SetStateAction<boolean>>;
 }
 
-const CustomerAdd: React.FC<CustomerAddProps> = ({ x, reload }) => {
+const CustomerAdd: React.FC<CustomerAddProps> = ({
+  x,
+  reload,
+  setMessage,
+  setShowMessage,
+  setIsPositive,
+}) => {
   // component logic
 
   const [showForm, setShowForm] = useState(false);
@@ -30,7 +41,7 @@ const CustomerAdd: React.FC<CustomerAddProps> = ({ x, reload }) => {
   const formSubmit = async (e: React.FormEvent) => {
     e.preventDefault(); // prevent default form submission behavior
     // create new customer object
-    const newCustomer = {
+    const newCustomer: Customer = {
       customerId,
       companyName,
       contactName,
@@ -45,25 +56,42 @@ const CustomerAdd: React.FC<CustomerAddProps> = ({ x, reload }) => {
     };
     try {
       const response = await CustomerService.create(newCustomer);
-      console.log("Customer added:", response);
-      // reset form fields
-      setCustomerId("");
-      setCompanyName("");
-      setContactName("");
-      setContactTitle("");
-      setAddress("");
-      setCity("");
-      setRegion("");
-      setPostalCode("");
-      setCountry("");
-      setPhone("");
-      setFax("");
+
+      if (response.status >= 200 && response.status < 300) {
+        setMessage(`✅ Added new customer: ${newCustomer.companyName}`);
+        setIsPositive(true);
+        setShowMessage(true);
+
+        setTimeout(() => setShowMessage(false), 5000);
+
+        setShowForm(false);
+        reload(!x);
+      } else {
+        setMessage(`⚠️ Error: ${response.statusText}`);
+        setIsPositive(false);
+        setShowMessage(true);
+        setTimeout(() => setShowMessage(false), 6000);
+      }
     } catch (error) {
-      console.error("Error adding customer:", error);
+      const err = error as AxiosError;
+      setMessage(err.message || "❌ Failed to add customer");
+      setIsPositive(false);
+      setShowMessage(true);
+      setTimeout(() => setShowMessage(false), 6000);
     }
-    setShowForm(false); // hide form after submission
-    reload(!x); // trigger re-fetching of customers in parent component
-    // window.location.reload(); // reload the page to show the new customer in the list (temporary solution)
+
+    // сброс формы
+    setCustomerId("");
+    setCompanyName("");
+    setContactName("");
+    setContactTitle("");
+    setAddress("");
+    setCity("");
+    setRegion("");
+    setPostalCode("");
+    setCountry("");
+    setPhone("");
+    setFax("");
   };
 
   return (

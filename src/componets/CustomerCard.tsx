@@ -1,33 +1,34 @@
 import { useState } from "react";
 import type { Customer as CustomerType } from "../types/CustomerType";
-import CustomerService from "../services/CustomerService";
+// import CustomerService from "../services/CustomerService";
 
 interface CustomerCardProps {
   customer: CustomerType;
-  onDelete: () => void;
+  // onDelete: () => void;
+  onDeleteRequest: (customer: CustomerType) => void;
 }
 
 // Receive customer as prop and display its details
-const CustomerCard = ({ customer, onDelete }: CustomerCardProps) => {
+const CustomerCard = ({ customer, onDeleteRequest }: CustomerCardProps) => {
   const [showDetails, setShowDetails] = useState(false);
-  const [isDeleting, setIsDeleting] = useState(false);
+  // const [isDeleting, setIsDeleting] = useState(false);
 
   // Handler for deleting a customer
-  const handleDelete = async () => {
-    if (isDeleting) return; // Prevent multiple deletions
-    if (!window.confirm(`Delete ${customer.companyName}?`)) return;
+  // const handleDelete = async () => {
+  //   if (isDeleting) return; // Prevent multiple deletions
+  //   if (!window.confirm(`Delete ${customer.companyName}?`)) return;
 
-    setIsDeleting(true);
-    try {
-      await CustomerService.remove(customer.customerId);
-      console.log("Customer deleted");
-      onDelete(); // Notify parent to refresh the list
-    } catch (error) {
-      console.error("Error deleting customer:", error);
-    } finally {
-      setIsDeleting(false);
-    }
-  };
+  //   setIsDeleting(true);
+  //   try {
+  //     await CustomerService.remove(customer.customerId);
+  //     console.log("Customer deleted");
+  //     onDelete(); // Notify parent to refresh the list
+  //   } catch (error) {
+  //     console.error("Error deleting customer:", error);
+  //   } finally {
+  //     setIsDeleting(false);
+  //   }
+  // };
 
   return (
     <>
@@ -79,10 +80,12 @@ const CustomerCard = ({ customer, onDelete }: CustomerCardProps) => {
             )}
             <button
               className="customer-card-btn"
-              onClick={handleDelete}
-              disabled={isDeleting}
+              // onClick={handleDelete}
+              onClick={() => onDeleteRequest(customer)}
+              // disabled={isDeleting}
             >
-              {isDeleting ? "Deleting..." : "Delete"}
+              Delete
+              {/* {isDeleting ? "Deleting..." : "Delete"} */}
             </button>
           </div>
         )}

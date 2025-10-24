@@ -26,7 +26,11 @@ const getAll = () => {
 // Create a new customer
 // use: CustomerService.create(newCustomer).then(response => ...)
 const create = (newCustomer: Customer) => {
-  const requestOptions = axios.post(baseUrl, newCustomer);
+  const requestOptions = axios.post(baseUrl, newCustomer, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
 
   return requestOptions.then((response) => response.data);
 };

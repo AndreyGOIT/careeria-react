@@ -1,9 +1,18 @@
+import { useState } from "react";
 import "./App.css";
 import CustomerList from "./componets/CustomerList.tsx";
+import Message from "./Message.tsx";
 // import Laskuri from "./componets/Laskuri.tsx";
 // import Events from "./componets/Events.tsx";
 
 const App = () => {
+  // Example state for message component
+  const [message, setMessage] = useState(
+    "Welcome to the Northwind application!"
+  );
+  const [isPositive, setIsPositive] = useState(true);
+  const [showMessage, setShowMessage] = useState(true);
+
   return (
     <>
       <h1 className="title-center">
@@ -11,7 +20,12 @@ const App = () => {
       </h1>
       {/* <Laskuri /> */}
       {/* <Events otsikko={"Coming events"} /> */}
-      <CustomerList />
+      {showMessage && <Message message={message} isPositive={isPositive} />}
+      <CustomerList
+        setMessage={setMessage}
+        setShowMessage={setShowMessage}
+        setIsPositive={setIsPositive}
+      />
     </>
   );
 };
