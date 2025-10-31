@@ -1,5 +1,5 @@
 import { useState } from "react";
-import type { Customer as CustomerType } from "../types/CustomerType";
+import type { Customer as CustomerType } from "../../types/CustomerType";
 // import CustomerService from "../services/CustomerService";
 
 interface CustomerCardProps {

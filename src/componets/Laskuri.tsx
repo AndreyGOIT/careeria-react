@@ -5,14 +5,14 @@ const Laskuri = () => {
 
   return (
     <div className="container">
-      <h2>BASIC COUNTER</h2>
+      <h2 style={{ textAlign: "center" }}>BASIC COUNTER</h2>
 
       <div className="card">
         <button onClick={() => setCount((count) => count + 1)}>
           <p className="mathsign">+</p>
         </button>
 
-        <h2>{count}</h2>
+        <h2 style={{ textAlign: "center" }}>{count}</h2>
 
         <button
           onClick={() =>

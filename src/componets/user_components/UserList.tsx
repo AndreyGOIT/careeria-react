@@ -1,81 +1,79 @@
 import { useState, useEffect } from "react";
-import CustomerService from "../services/CustomerService";
-import type { Customer } from "../types/CustomerType";
-import "../styles/CustomerList.css";
-import CustomerCard from "./CustomerCard";
-import CustomerAdd from "./CustomerAdd";
+import UserService from "../../services/UserService";
+import type { User } from "../../types/UserType";
+import "./UserList.css";
+import UserCard from "./UserCard";
+import UserAdd from "./UserAdd";
 
 import type { Dispatch, SetStateAction } from "react";
-import CustomerEdit from "./CustomerEdit";
+import UserEdit from "./UserEdit";
 
-interface CustomerListProps {
+interface UserListProps {
   setMessage: Dispatch<SetStateAction<string>>;
   setShowMessage: Dispatch<SetStateAction<boolean>>;
   setIsPositive: Dispatch<SetStateAction<boolean>>;
 }
 
-const CustomerList: React.FC<CustomerListProps> = ({
+const UserList: React.FC<UserListProps> = ({
   setMessage,
   setShowMessage,
   setIsPositive,
 }) => {
-  const [customers, setCustomers] = useState([]);
+  const [users, setUsers] = useState([]);
   const [show, setShow] = useState(false);
-  // state to trigger re-fetching of customers
+  // state to trigger re-fetching of users
   const [x, reload] = useState(false);
   const [search, setSearch] = useState("");
-  // Handler for delete request from CustomerCard
+  // Handler for delete request from UserCard
   const [showConfirm, setShowConfirm] = useState(false);
-  const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(
-    null
-  );
-  const [editingCustomer, setEditingCustomer] = useState<Customer | null>(null);
+  const [selectedUser, setSelectedUser] = useState<User | null>(null);
+  const [editingUser, setEditingUser] = useState<User | null>(null);
   const [showEditModal, setShowEditModal] = useState(false);
 
-  const handleEditRequest = (customer: Customer) => {
-    setEditingCustomer(customer);
-    console.log("Editing customer: ", customer);
+  const handleEditRequest = (user: User) => {
+    setEditingUser(user);
+    console.log("Editing user: ", user);
     setShowEditModal(true);
   };
 
-  const handleDeleteRequest = (customer: Customer) => {
-    setSelectedCustomer(customer);
-    console.log("Selected customer: ", customer);
+  const handleDeleteRequest = (user: User) => {
+    setSelectedUser(user);
+    console.log("Selected user: ", user);
     setShowConfirm(true);
   };
 
   const handleConfirmDelete = async () => {
-    if (!selectedCustomer) return;
+    if (!selectedUser) return;
 
     try {
-      await CustomerService.remove(selectedCustomer.customerId);
+      await UserService.remove(selectedUser.userId);
       reload(!x);
     } catch (error) {
       console.error("Error deleting customer:", error);
     } finally {
       setShowConfirm(false);
-      setSelectedCustomer(null);
+      setSelectedUser(null);
     }
   };
 
   // Fetch customers on component mount
   useEffect(() => {
-    CustomerService.getAll()
-      .then((data) => setCustomers(data))
+    UserService.getAll()
+      .then((data) => setUsers(data))
       .catch((error) => {
-        console.error("Error fetching customers:", error);
+        console.error("Error fetching users:", error);
       });
   }, [x, show]);
 
   return (
     <>
       <h2
-        className={`customer-list-title ${show ? "" : "pulsing"}`}
+        className={`user-list-title ${show ? "" : "pulsing"}`}
         onClick={() => setShow(!show)}
       >
-        Customers
+        Users
       </h2>
-      <CustomerAdd
+      <UserAdd
         x={x}
         reload={reload}
         setMessage={setMessage}
@@ -86,29 +84,29 @@ const CustomerList: React.FC<CustomerListProps> = ({
       {/* Search input - functionality not implemented yet */}
       <input
         type="text"
-        placeholder="Search by company name..."
-        className="customer-search-input"
+        placeholder="Search by user name..."
+        className="user-search-input"
         value={search}
         onChange={({ target }) => setSearch(target.value)}
       />
       <hr />
-      {/* customers list */}
+      {/* users list */}
       {show && (
-        <div className="customer-list-grid">
-          {customers &&
-            customers.map((c: Customer) => {
+        <div className="user-list-grid">
+          {users &&
+            users.map((u: User) => {
               if (
-                c.companyName.toLowerCase().indexOf(search.toLowerCase()) === -1
+                u.username.toLowerCase().indexOf(search.toLowerCase()) === -1
               ) {
                 return null; // не отображать, если не совпадает с поиском
               }
 
-              if (c.companyName.toLowerCase().includes(search.toLowerCase())) {
+              if (u.username.toLowerCase().includes(search.toLowerCase())) {
                 // console.log("Found:", c.companyName);
                 return (
-                  <CustomerCard
-                    key={c.customerId}
-                    customer={c}
+                  <UserCard
+                    key={u.userId}
+                    user={u}
                     onEditRequest={handleEditRequest}
                     onDeleteRequest={handleDeleteRequest}
                   />
@@ -119,9 +117,9 @@ const CustomerList: React.FC<CustomerListProps> = ({
       )}
 
       {/* Edit Modal */}
-      {showEditModal && editingCustomer && (
-        <CustomerEdit
-          customer={editingCustomer}
+      {showEditModal && editingUser && (
+        <UserEdit
+          user={editingUser}
           x={x}
           reload={reload}
           setMessage={setMessage}
@@ -133,11 +131,11 @@ const CustomerList: React.FC<CustomerListProps> = ({
 
       {/* Confirmation Modal */}
       {showConfirm && (
-        <div className="modal-overlay">
-          <div className="modal">
+        <div className="user-modal-overlay">
+          <div className="user-modal">
             <h3>Confirm Deletion</h3>
-            <p>Delete {selectedCustomer?.companyName}?</p>
-            <div className="modal-buttons">
+            <p>Delete {selectedUser?.username}?</p>
+            <div className="user-modal-buttons">
               <button
                 className="btn cancel"
                 onClick={() => setShowConfirm(false)}
@@ -155,4 +153,4 @@ const CustomerList: React.FC<CustomerListProps> = ({
   );
 };
 
-export default CustomerList;
+export default UserList;

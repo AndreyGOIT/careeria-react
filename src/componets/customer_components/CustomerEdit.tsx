@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
-import styles from "../styles/CustomerEdit.module.css";
-import CustomerService from "../services/CustomerService";
+import styles from "../../styles/CustomerEdit.module.css";
+import CustomerService from "../../services/CustomerService";
 import type { Dispatch, SetStateAction } from "react";
-import type { Customer } from "../types/CustomerType";
+import type { Customer } from "../../types/CustomerType";
 
 interface CustomerEditProps {
   customer: Customer;

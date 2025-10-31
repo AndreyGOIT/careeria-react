@@ -1,10 +1,10 @@
 import { useState } from "react";
-import "../styles/CustomerAdd.css";
-import CustomerService from "../services/CustomerService";
+import "../../styles/CustomerAdd.css";
+import CustomerService from "../../services/CustomerService";
 import type { AxiosError } from "axios";
 
 import type { Dispatch, SetStateAction } from "react";
-import type { Customer } from "../types/CustomerType";
+import type { Customer } from "../../types/CustomerType";
 
 interface CustomerAddProps {
   x: boolean;
