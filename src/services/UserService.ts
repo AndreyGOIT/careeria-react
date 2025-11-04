@@ -1,54 +1,31 @@
-import axios from "axios";
+// src/services/UserService.ts
+import api from "./api"; // общий axios-инстанс с интерцептором
 import type { User } from "../types/UserType";
 
-const baseUrl = "http://localhost:5109/api/Users";
-
-// export interface User {
-//   userId: number;
-//   firstname: string;
-//   lastname: string;
-//   username: string;
-//   password: string;
-//   accesslevel: number;
-// }
+const resource = "/Users";
 
 // Fetch all users
-// use: UserService.getAll().then(data => ...)
-const getAll = () => {
-  const requestOptions = axios.get(baseUrl);
-  return requestOptions.then((response) => response.data);
+const getAll = async () => {
+  const response = await api.get(resource);
+  return response.data;
 };
 
 // Create a new user
-// use: UserService.create(newUser).then(response => ...)
-const create = (newUser: Omit<User, "userId">) => {
-  const requestOptions = axios.post(baseUrl, newUser, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-
-  return requestOptions.then((response) => response.data);
+const create = async (newUser: Omit<User, "userId">) => {
+  const response = await api.post(resource, newUser);
+  return response.data;
 };
 
-// Edit an existing customer
-// use: UserService.update(userId, updatedUser).then(response => ...)
-const update = (userId: number, updatedUser: User) => {
-  const requestOptions = axios.put(`${baseUrl}/${userId}`, updatedUser, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-
-  return requestOptions.then((response) => response.data);
+// Edit an existing user
+const update = async (userId: number, updatedUser: User) => {
+  const response = await api.put(`${resource}/${userId}`, updatedUser);
+  return response.data;
 };
 
 // Delete a user by ID
-// use: UserService.remove(userId).then(response => ...)
-const remove = (userId: number) => {
-  const requestOptions = axios.delete(`${baseUrl}/${userId}`);
-
-  return requestOptions.then((response) => response.data);
-}
+const remove = async (userId: number) => {
+  const response = await api.delete(`${resource}/${userId}`);
+  return response.data;
+};
 
 export default { getAll, create, update, remove };

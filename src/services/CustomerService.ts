@@ -1,6 +1,4 @@
-import axios from "axios";
-
-const baseUrl = "http://localhost:5109/api/Customers";
+import api from "./api";
 
 export interface Customer {
   customerId: string;
@@ -17,42 +15,27 @@ export interface Customer {
 }
 
 // Fetch all customers
-// use: CustomerService.getAll().then(data => ...)
-const getAll = () => {
-  const requestOptions = axios.get(baseUrl);
-  return requestOptions.then((response) => response.data);
+const getAll = async () => {
+  const response = await api.get("/Customers");
+  return response.data;
 };
 
 // Create a new customer
-// use: CustomerService.create(newCustomer).then(response => ...)
-const create = (newCustomer: Customer) => {
-  const requestOptions = axios.post(baseUrl, newCustomer, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-
-  return requestOptions.then((response) => response.data);
+const create = async (newCustomer: Customer) => {
+  const response = await api.post("/Customers", newCustomer);
+  return response.data;
 };
 
 // Edit an existing customer
-// use: CustomerService.update(customerId, updatedCustomer).then(response => ...)
-const update = (customerId: string, updatedCustomer: Customer) => {
-  const requestOptions = axios.put(`${baseUrl}/${customerId}`, updatedCustomer, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-
-  return requestOptions.then((response) => response.data);
+const update = async (customerId: string, updatedCustomer: Customer) => {
+  const response = await api.put(`/Customers/${customerId}`, updatedCustomer);
+  return response.data;
 };
 
 // Delete a customer by ID
-// use: CustomerService.remove(customerId).then(response => ...)
-const remove = (customerId: string) => {
-  const requestOptions = axios.delete(`${baseUrl}/${customerId}`);
-
-  return requestOptions.then((response) => response.data);
-}
+const remove = async (customerId: string) => {
+  const response = await api.delete(`/Customers/${customerId}`);
+  return response.data;
+};
 
 export default { getAll, create, update, remove };
