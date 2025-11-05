@@ -176,7 +176,14 @@ const UserAdd: React.FC<UserAddProps> = ({
                   onChange={handleChange}
                 />
               </div>
-              <div>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  marginTop: "10px",
+                }}
+              >
                 <label>Accesslevel:</label>
                 <select
                   name="accesslevel"

@@ -77,12 +77,12 @@ const Login: React.FC<LoginProps> = ({
 
     try {
       const response = await AuthService.authenticate(credentials);
-      console.log("Ответ при логине:", response);
+      //   console.log("Ответ при логине:", response);
 
-      // Деструктурируем данные с правильными именами
+      // getting username, token, accesslevelId from response
       const { username, token, accesslevelId } = response;
 
-      // Сохраняем пользователя и токен
+      // save to localStorage and update state
       setLoggedInUser(username);
       localStorage.setItem("user", JSON.stringify(response));
       localStorage.setItem("token", token);
@@ -124,7 +124,7 @@ const Login: React.FC<LoginProps> = ({
           }`}
         >
           <div className="user-modal">
-            <h2>Login form</h2>
+            <h2 style={{ color: "indigo" }}>Login form</h2>
             <form className="user-add-form" onSubmit={formSubmit}>
               <div>
                 <label>Username:</label>

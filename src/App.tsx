@@ -11,6 +11,7 @@ import { Route, Routes } from "react-router-dom";
 import Laskuri from "./componets/Laskuri.tsx";
 import UserList from "./componets/user_components/UserList.tsx";
 import Login from "./componets/Login.tsx";
+import Footer from "./componets/Footer.tsx";
 
 const App = () => {
   const navigate = useNavigate();
@@ -23,22 +24,20 @@ const App = () => {
   const [loggedInUser, setLoggedInUser] = useState<string | null>(null);
 
   const handleLogout = () => {
+    // ✅ Clear user session on logout
+    localStorage.clear();
     setLoggedInUser(null);
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
-    localStorage.removeItem("username");
-    localStorage.removeItem("accesslelevel");
 
     setMessage("✅ Logged out successfully.");
     setIsPositive(true);
     setShowMessage(true);
     setTimeout(() => setShowMessage(false), 5000);
 
-    // ✅ Перенаправляем на главную
+    // ✅ redirect to home page after logout
     navigate("/");
   };
 
-  // ✅ При запуске приложения восстанавливаем пользователя из localStorage
+  // ✅ Check for logged-in user on component mount
   useEffect(() => {
     const storedUser = localStorage.getItem("username");
     if (storedUser) {
@@ -47,16 +46,16 @@ const App = () => {
   }, []);
 
   return (
-    <>
-      <Navbar bg="dark" variant="dark" expand="lg">
-        <Navbar.Brand href="/" style={{ paddingLeft: 15 }}>
+    <div className="app-container">
+      {/* Навигация */}
+      <Navbar bg="dark" variant="dark" expand="lg" className="navbar-custom">
+        <Navbar.Brand href="/" className="navbar-brand">
           Northwind App
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
             <Nav.Link href="/">Home</Nav.Link>
-            {/* Показываем ссылки, если пользователь залогинен */}
             {loggedInUser && (
               <>
                 <Nav.Link href="/customers">Customers</Nav.Link>
@@ -64,80 +63,69 @@ const App = () => {
               </>
             )}
           </Nav>
-          {/* Если пользователь не залогинен — показываем Login */}
-          {!loggedInUser && (
+
+          {!loggedInUser ? (
             <Login
               setMessage={setMessage}
               setShowMessage={setShowMessage}
               setIsPositive={setIsPositive}
               setLoggedInUser={setLoggedInUser}
             />
-          )}
-          {/* Если залогинен — показываем Logout */}
-          {loggedInUser && (
-            <>
-              <span style={{ color: "white", marginRight: 15 }}>
-                Logged in as: {loggedInUser}
-              </span>
-              <button
-                onClick={handleLogout}
-                style={{
-                  marginRight: 15,
-                  padding: "5px 10px",
-                  cursor: "pointer",
-                  color: "white",
-                  backgroundColor: "#007bff",
-                  border: "none",
-                  borderRadius: "4px",
-                }}
-              >
+          ) : (
+            <div className="user-info">
+              <span className="logged-user">Logged in as: {loggedInUser}</span>
+              <button onClick={handleLogout} className="logout-btn">
                 Logout
               </button>
-            </>
+            </div>
           )}
         </Navbar.Collapse>
       </Navbar>
 
-      {showMessage && <Message message={message} isPositive={isPositive} />}
-
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <>
+      {/* Основной контент */}
+      <main className="main-content">
+        {/* Сообщения */}
+        {showMessage && <Message message={message} isPositive={isPositive} />}
+        <Routes>
+          <Route
+            path="/"
+            element={
               <div className="home-page">
-                <h1 style={{ textAlign: "center" }}>Home Page</h1>
+                <h1>Home Page</h1>
                 <h2 className="title-center">
                   React + Vite{" "}
                   <span className="highlight">/ .NET Core API</span>
                 </h2>
+                <Laskuri />
               </div>
-              <Laskuri />
-            </>
-          }
-        />
-        <Route
-          path="/customers"
-          element={
-            <CustomerList
-              setMessage={setMessage}
-              setShowMessage={setShowMessage}
-              setIsPositive={setIsPositive}
-            />
-          }
-        />
-        <Route
-          path="/users"
-          element={
-            <UserList
-              setMessage={setMessage}
-              setShowMessage={setShowMessage}
-              setIsPositive={setIsPositive}
-            />
-          }
-        />
-      </Routes>
-    </>
+            }
+          />
+          <Route
+            path="/customers"
+            element={
+              <CustomerList
+                setMessage={setMessage}
+                setShowMessage={setShowMessage}
+                setIsPositive={setIsPositive}
+              />
+            }
+          />
+          <Route
+            path="/users"
+            element={
+              <UserList
+                setMessage={setMessage}
+                setShowMessage={setShowMessage}
+                setIsPositive={setIsPositive}
+              />
+            }
+          />
+        </Routes>
+      </main>
+
+      {/* Футер */}
+      <Footer />
+    </div>
   );
 };
 

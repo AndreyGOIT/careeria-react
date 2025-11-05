@@ -1,22 +1,190 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  height: 100vh;
-  /* padding: 2rem; */
-  /* text-align: center; */
-}
-.title-center {
-  text-align: center;
+/* Общий контейнер — вся страница */
+/* .app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: #f4f6f8;
+  font-family: "Segoe UI", Roboto, sans-serif;
+} */
+
+/* Навбар */
+/* .navbar-custom {
+  background: #1f1f1f !important;
+  padding: 0.8rem 1.5rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-.read-the-docs {
-  color: #888;
+.navbar-brand {
+  font-weight: 600;
+  color: #00bcd4 !important;
+  letter-spacing: 0.5px;
 }
+
+.navbar-brand:hover {
+  color: #03e9f4 !important;
+}
+
+.nav-link {
+  color: #e0e0e0 !important;
+  margin-right: 10px;
+  transition: 0.2s;
+}
+
+.nav-link:hover {
+  color: #03e9f4 !important;
+} */
+
+/* Блок с кнопкой выхода */
+.user-info {
+  display: flex;
+  align-items: center;
+}
+
+.logged-user {
+  color: #fff;
+  margin-right: 10px;
+}
+
+/* Кнопка выхода */
+.logout-btn {
+  padding: 6px 14px;
+  background-color: #00bcd4;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.logout-btn:hover {
+  background-color: #0097a7;
+}
+
+/* Основной контент */
+.main-content {
+  flex: 1;
+  padding: 20px;
+}
+
+/* Домашняя страница */
+.home-page {
+  text-align: center;
+  padding-top: 40px;
+}
+
+.title-center {
+  font-size: 1.8rem;
+  margin-top: 10px;
+}
+
+.highlight {
+  color: #00bcd4;
+  font-weight: 600;
+}
+
+/* Футер */
+/* footer {
+  background: #1f1f1f;
+  color: #ccc;
+  text-align: center;
+  padding: 10px;
+  margin-top: auto;
+  font-size: 0.9rem;
+  letter-spacing: 0.3px;
+} */
+/* === Основной макет страницы === */
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Навигационная панель */
+.navbar-custom {
+  background: #1f1f1f !important;
+  padding: 0.8rem 1.5rem !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.navbar-brand {
+  font-weight: 600;
+  color: #00bcd4 !important;
+  letter-spacing: 0.5px;
+}
+
+.navbar-brand:hover {
+  color: #03e9f4 !important;
+}
+
+.nav-link {
+  color: #e0e0e0 !important;
+  margin-right: 10px;
+  transition: 0.2s;
+}
+
+.nav-link:hover {
+  color: #03e9f4 !important;
+}
+
+/* Блок пользователя */
+.user-info {
+  display: flex;
+  align-items: center;
+}
+
+.logged-user {
+  color: #fff;
+  margin-right: 10px;
+}
+
+/* Основной контент */
+.main-content {
+  flex: 1;
+  padding: 20px;
+  background-color: #f4f6f8;
+}
+
+/* Домашняя страница */
+.home-page {
+  text-align: center;
+  padding-top: 40px;
+}
+
+/* Футер */
+footer {
+  background: #1f1f1f;
+  color: #ccc;
+  text-align: center;
+  padding: 12px;
+  font-size: 0.9rem;
+  letter-spacing: 0.3px;
+  margin-top: auto;
+}
+
+.message-positive {
+  text-align: center;
+  color: green;
+  font-weight: bold;
+  margin: 20px 0;
+}
+.message-negative {
+  text-align: center;
+  color: red;
+  font-weight: bold;
+  margin: 20px 0;
+}
+
 .container {
   width: 1280px;
-  /* margin: 0 auto; */
   padding: 2rem;
-  /* text-align: center; */
   border: 2px solid #eee;
   border-radius: 10px;
   background-color: #6171ef;
@@ -54,6 +222,20 @@
 .title-center .highlight {
   color: #2e9628;
 }
+
+/* #root {
+  max-width: 1280px;
+  margin: 0 auto;
+  height: 100vh;
+}
+.title-center {
+  text-align: center;
+}
+
+.read-the-docs {
+  color: #888;
+}
+
 .message-positive {
   text-align: center;
   color: green;
@@ -66,3 +248,43 @@
   font-weight: bold;
   margin: 20px 0;
 }
+.logout-btn {
+  margin-right: 15px;
+  background-color: #ff4d4d;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.logout-btn:hover {
+  background-color: #e60000;
+}
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes modalFadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+@keyframes modalOut {
+  from {
+    transform: scale(1);
+    opacity: 1;
+  }
+  to {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+} */

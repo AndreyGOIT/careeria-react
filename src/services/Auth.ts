@@ -1,5 +1,5 @@
 // src/services/Auth.ts
-import api from "./api"; // общий axios-инстанс с интерцептором
+import api from "./api"; // common axios instance with interceptor
 
 export interface AuthCredentials {
   username: string;

@@ -120,6 +120,7 @@
   transition: all 0.3s ease;
   text-align: center;
   margin-right: 15px;
+  margin-bottom: 0;
   user-select: none;
 }
 

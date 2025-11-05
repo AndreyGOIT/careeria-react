@@ -1,14 +1,15 @@
 import axios from "axios";
 
-// Базовая конфигурация
+// Base configuration
 const api = axios.create({
-  baseURL: "http://localhost:5109/api",
+  baseURL: "https://nwbackendandy.azurewebsites.net/api",
+  // baseURL: "http://localhost:5109/api",
   headers: {
     "Content-Type": "application/json",
   },
 });
 
-// Интерцептор для автоматической подстановки токена
+// interceptor for automatic token injection
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem("token");
   if (token) {
