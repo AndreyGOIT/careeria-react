@@ -1,5 +1,6 @@
 import { useState } from "react";
 import type { User as UserType } from "../../types/UserType";
+import styles from "./User.module.css";
 
 interface UserCardProps {
   user: UserType;
@@ -13,50 +14,51 @@ const UserCard = ({ user, onDeleteRequest, onEditRequest }: UserCardProps) => {
 
   return (
     <>
-      <div className="customer-card">
+      <div className={styles.userCard}>
         {!showDetails ? (
           <h3
             onClick={() => setShowDetails(!showDetails)}
-            className="customer-card-title"
+            className={styles.userCardTitle}
           >
             {user.username}
           </h3>
         ) : (
           <button
             onClick={() => setShowDetails(!showDetails)}
-            className="customer-card-title clickable"
+            className={styles.userCardCloseBtn}
           >
-            [ x ] Close
+            [x] close details
           </button>
         )}
         {showDetails && (
-          <div key={user.userId} className="customer-card">
+          <div key={user.userId} className={styles.userCardContent}>
             <p>
-              <strong className="customer-card-label">Full name:</strong>{" "}
+              <strong className={styles.userCardLabel}>Full name:</strong>{" "}
               {user.firstname} ({user.lastname})
             </p>
             <p>
-              <strong className="customer-card-label">Name:</strong>{" "}
+              <strong className={styles.userCardLabel}>Name:</strong>{" "}
               {user.username}
             </p>
             <p>
-              <strong className="customer-card-label">Accesslevel:</strong>{" "}
+              <strong className={styles.userCardLabel}>Accesslevel:</strong>{" "}
               {user.accesslevel === 1 ? "Admin" : "User"}
             </p>
 
-            <button
-              className="customer-card-btn-edit"
-              onClick={() => onEditRequest(user)}
-            >
-              Edit
-            </button>
-            <button
-              className="customer-card-btn"
-              onClick={() => onDeleteRequest(user)}
-            >
-              Delete
-              {/* {isDeleting ? "Deleting..." : "Delete"} */}
-            </button>
+            <div className={styles.modalButtons}>
+              <button
+                className={styles.userCardBtnEdit}
+                onClick={() => onEditRequest(user)}
+              >
+                📝 Edit
+              </button>
+              <button
+                className={styles.userCardBtn}
+                onClick={() => onDeleteRequest(user)}
+              >
+                Delete
+              </button>
+            </div>
           </div>
         )}
       </div>

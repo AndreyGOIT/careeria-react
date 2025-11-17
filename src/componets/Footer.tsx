@@ -12,7 +12,8 @@ const Footer = () => {
         }}
       >
         <p>
-          &copy; {new Date().getFullYear()} Northwind App. All rights reserved.
+          &copy; {new Date().getFullYear()} Northwind Management App by Andy
+          Erokhin. All rights reserved.
         </p>
       </footer>
     </>

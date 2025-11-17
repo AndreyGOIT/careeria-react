@@ -1,12 +1,14 @@
 import { useState, useEffect } from "react";
 import UserService from "../../services/UserService";
 import type { User } from "../../types/UserType";
-import "./UserList.css";
+import type { Dispatch, SetStateAction } from "react";
+import styles from "./User.module.css";
 import UserCard from "./UserCard";
 import UserAdd from "./UserAdd";
-
-import type { Dispatch, SetStateAction } from "react";
 import UserEdit from "./UserEdit";
+
+import ConfirmDeleteModal from "../ui/confirm/ConfirmDeleteModal";
+import LoaderOverlay from "../ui/loaderOverlay/LoaderOverlay";
 
 interface UserListProps {
   setMessage: Dispatch<SetStateAction<string>>;
@@ -19,6 +21,7 @@ const UserList: React.FC<UserListProps> = ({
   setShowMessage,
   setIsPositive,
 }) => {
+  const [loading, setLoading] = useState(true);
   const [users, setUsers] = useState([]);
   const [show, setShow] = useState(false);
   // state to trigger re-fetching of users
@@ -32,13 +35,11 @@ const UserList: React.FC<UserListProps> = ({
 
   const handleEditRequest = (user: User) => {
     setEditingUser(user);
-    console.log("Editing user: ", user);
     setShowEditModal(true);
   };
 
   const handleDeleteRequest = (user: User) => {
     setSelectedUser(user);
-    console.log("Selected user: ", user);
     setShowConfirm(true);
   };
 
@@ -62,13 +63,16 @@ const UserList: React.FC<UserListProps> = ({
       .then((data) => setUsers(data))
       .catch((error) => {
         console.error("Error fetching users:", error);
-      });
+      })
+      .finally(() => setLoading(false));
   }, [x, show]);
 
-  return (
+  return loading ? (
+    <LoaderOverlay />
+  ) : (
     <>
       <h2
-        className={`user-list-title ${show ? "" : "pulsing"}`}
+        className={`${styles.userListTitle} ${show ? "" : styles.pulsing}`}
         onClick={() => setShow(!show)}
       >
         Users
@@ -81,28 +85,28 @@ const UserList: React.FC<UserListProps> = ({
         setIsPositive={setIsPositive}
       />
 
-      {/* Search input - functionality not implemented yet */}
+      {/* Search input */}
       <input
         type="text"
+        name="userSearch"
         placeholder="Search by user name..."
-        className="user-search-input"
+        className={styles.userSearchInput}
         value={search}
         onChange={({ target }) => setSearch(target.value)}
       />
       <hr />
       {/* users list */}
       {show && (
-        <div className="user-list-grid">
+        <div className={styles.userListGrid}>
           {users &&
             users.map((u: User) => {
               if (
                 u.username.toLowerCase().indexOf(search.toLowerCase()) === -1
               ) {
-                return null; // не отображать, если не совпадает с поиском
+                return null; // does not match search, skip rendering
               }
 
               if (u.username.toLowerCase().includes(search.toLowerCase())) {
-                // console.log("Found:", c.companyName);
                 return (
                   <UserCard
                     key={u.userId}
@@ -129,26 +133,13 @@ const UserList: React.FC<UserListProps> = ({
         />
       )}
 
-      {/* Confirmation Modal */}
-      {showConfirm && (
-        <div className="user-modal-overlay">
-          <div className="user-modal">
-            <h3>Confirm Deletion</h3>
-            <p>Delete {selectedUser?.username}?</p>
-            <div className="user-modal-buttons">
-              <button
-                className="btn cancel"
-                onClick={() => setShowConfirm(false)}
-              >
-                Cancel
-              </button>
-              <button className="btn delete" onClick={handleConfirmDelete}>
-                Delete
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      {/* Delete Confirmation Modal */}
+      <ConfirmDeleteModal
+        show={showConfirm}
+        itemName={selectedUser?.username ?? ""}
+        onConfirm={handleConfirmDelete}
+        onCancel={() => setShowConfirm(false)}
+      />
     </>
   );
 };

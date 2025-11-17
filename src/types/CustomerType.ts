@@ -1,3 +1,4 @@
+// src/types/CustomerType.ts
 export type Customer = {
   customerId: string;
   companyName: string;

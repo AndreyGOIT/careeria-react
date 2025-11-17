@@ -1,0 +1,14 @@
+/* src/componets/login_components/Login.module.css */
+
+.loginButton {
+  padding: 8px 16px;
+  background-color: #158f9f;
+  color: white;
+  border: 1px solid #158f9f;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+.loginButton:hover {
+  background-color: #19bfc8;
+}

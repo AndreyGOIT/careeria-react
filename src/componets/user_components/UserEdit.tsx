@@ -1,8 +1,8 @@
 import { useState } from "react";
-import styles from "../../styles/CustomerEdit.module.css";
 import UserService from "../../services/UserService";
 import type { Dispatch, SetStateAction } from "react";
 import type { User } from "../../types/UserType";
+import styles from "./User.module.css";
 
 interface UserEditProps {
   user: User;
@@ -45,14 +45,11 @@ const UserEdit: React.FC<UserEditProps> = ({
     e.preventDefault();
     const updatedUser: User = { userId: user.userId, ...formData };
     try {
-      const response = await UserService.update(user.userId, updatedUser);
-      if (response.status >= 200 && response.status < 300) {
-        setMessage(`✅ User ${formData.username} updated successfully!`);
-        setIsPositive(true);
-      } else {
-        setMessage(`⚠️ Error: ${response.statusText}`);
-        setIsPositive(false);
-      }
+      await UserService.update(user.userId, updatedUser);
+
+      // Success
+      setMessage(`✅ User ${formData.username} updated successfully!`);
+      setIsPositive(true);
     } catch (error) {
       console.error("Error updating user:", error);
       setMessage(`❌ Error updating user: ${error}`);
@@ -67,8 +64,8 @@ const UserEdit: React.FC<UserEditProps> = ({
   return (
     <div className={styles.modalOverlay}>
       <div className={styles.modal}>
-        <h2 className={styles.modalTitle}>Edit User</h2>
-        <form className={styles.customerEditForm} onSubmit={formSubmit}>
+        <h2 className={styles.modalTitle}>📝 Edit User</h2>
+        <form className={styles.userEditForm} onSubmit={formSubmit}>
           <div className={styles.formGrid}>
             <label>Username:</label>
             <input
@@ -111,21 +108,15 @@ const UserEdit: React.FC<UserEditProps> = ({
               <option value={1}>Admin</option>
               <option value={2}>User</option>
             </select>
-            {/* <input
-              type="number"
-              name="accesslevel"
-              value={formData.accesslevel}
-              onChange={handleChange}
-            /> */}
           </div>
 
-          <div className={styles.buttonRow}>
-            <button type="submit" className={styles.btnSave}>
+          <div className={styles.modalButtons}>
+            <button type="submit" className={styles.btn + " " + styles.save}>
               💾 Save
             </button>
             <button
               type="button"
-              className={styles.btnCancel}
+              className={styles.btn + " " + styles.cancel}
               onClick={onClose}
             >
               ✖ Cancel

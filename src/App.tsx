@@ -1,17 +1,20 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import "./App.css";
+import Home from "./componets/homePage_components/Home.tsx";
 import CustomerList from "./componets/customer_components/CustomerList.tsx";
-import Message from "./Message.tsx";
+import ProductList from "./componets/product_components/ProductList.tsx";
+import UserList from "./componets/user_components/UserList.tsx";
+import Message from "./componets/Message.tsx";
 // Navigate component for routing
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Route, Routes } from "react-router-dom";
-import Laskuri from "./componets/Laskuri.tsx";
-import UserList from "./componets/user_components/UserList.tsx";
-import Login from "./componets/Login.tsx";
+import Login from "./componets/login_components/Login.tsx";
 import Footer from "./componets/Footer.tsx";
+import ProtectedRoute from "./componets/ProtectedRoute.tsx";
+import LoaderOverlay from "./componets/ui/loaderOverlay/LoaderOverlay.tsx";
 
 const App = () => {
   const navigate = useNavigate();
@@ -22,6 +25,8 @@ const App = () => {
   const [isPositive, setIsPositive] = useState(true);
   const [showMessage, setShowMessage] = useState(true);
   const [loggedInUser, setLoggedInUser] = useState<string | null>(null);
+  const location = useLocation();
+  const [isRouteLoading, setIsRouteLoading] = useState(false);
 
   const handleLogout = () => {
     // ✅ Clear user session on logout
@@ -45,9 +50,16 @@ const App = () => {
     }
   }, []);
 
+  // Detect route change
+  useEffect(() => {
+    setIsRouteLoading(true);
+    const timeout = setTimeout(() => setIsRouteLoading(false), 300);
+    return () => clearTimeout(timeout);
+  }, [location.pathname]);
+
   return (
     <div className="app-container">
-      {/* Навигация */}
+      {/* Navigation */}
       <Navbar bg="dark" variant="dark" expand="lg" className="navbar-custom">
         <Navbar.Brand href="/" className="navbar-brand">
           Northwind App
@@ -59,6 +71,7 @@ const App = () => {
             {loggedInUser && (
               <>
                 <Nav.Link href="/customers">Customers</Nav.Link>
+                <Nav.Link href="/products">Products</Nav.Link>
                 <Nav.Link href="/users">Users</Nav.Link>
               </>
             )}
@@ -82,48 +95,57 @@ const App = () => {
         </Navbar.Collapse>
       </Navbar>
 
-      {/* Основной контент */}
+      {/* Main contant */}
       <main className="main-content">
-        {/* Сообщения */}
+        {/* Messages */}
         {showMessage && <Message message={message} isPositive={isPositive} />}
+
+        {/* Loader Overlay */}
+        {isRouteLoading && <LoaderOverlay />}
+
+        {/* Route-based content */}
         <Routes>
-          <Route
-            path="/"
-            element={
-              <div className="home-page">
-                <h1>Home Page</h1>
-                <h2 className="title-center">
-                  React + Vite{" "}
-                  <span className="highlight">/ .NET Core API</span>
-                </h2>
-                <Laskuri />
-              </div>
-            }
-          />
+          <Route path="/" element={<Home />} />
           <Route
             path="/customers"
             element={
-              <CustomerList
-                setMessage={setMessage}
-                setShowMessage={setShowMessage}
-                setIsPositive={setIsPositive}
-              />
+              <ProtectedRoute requiredRole={2}>
+                <CustomerList
+                  setMessage={setMessage}
+                  setShowMessage={setShowMessage}
+                  setIsPositive={setIsPositive}
+                />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/products"
+            element={
+              <ProtectedRoute requiredRole={2}>
+                <ProductList
+                  setMessage={setMessage}
+                  setShowMessage={setShowMessage}
+                  setIsPositive={setIsPositive}
+                />
+              </ProtectedRoute>
             }
           />
           <Route
             path="/users"
             element={
-              <UserList
-                setMessage={setMessage}
-                setShowMessage={setShowMessage}
-                setIsPositive={setIsPositive}
-              />
+              <ProtectedRoute requiredRole={1}>
+                <UserList
+                  setMessage={setMessage}
+                  setShowMessage={setShowMessage}
+                  setIsPositive={setIsPositive}
+                />
+              </ProtectedRoute>
             }
           />
         </Routes>
       </main>
 
-      {/* Футер */}
+      {/* Footer */}
       <Footer />
     </div>
   );

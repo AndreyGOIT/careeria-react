@@ -1,12 +1,12 @@
 import { useState } from "react";
-import "../../styles/CustomerAdd.css";
 import CustomerService from "../../services/CustomerService";
 import type { AxiosError } from "axios";
-
 import type { Dispatch, SetStateAction } from "react";
-// import type { Customer } from "../../types/CustomerType";
+import type { Customer } from "../../types/CustomerType";
+import styles from "./Customer.module.css";
 
 interface CustomerAddProps {
+  customers: Customer[];
   x: boolean;
   reload: Dispatch<SetStateAction<boolean>>;
   setMessage: Dispatch<SetStateAction<string>>;
@@ -15,6 +15,7 @@ interface CustomerAddProps {
 }
 
 const CustomerAdd: React.FC<CustomerAddProps> = ({
+  customers,
   x,
   reload,
   setMessage,
@@ -39,9 +40,32 @@ const CustomerAdd: React.FC<CustomerAddProps> = ({
   const [phone, setPhone] = useState("");
   const [fax, setFax] = useState("");
 
+  const closeForm = () => {
+    setIsClosing(true);
+    setTimeout(() => {
+      setShowForm(false);
+      setIsClosing(false);
+    }, 300); // Duration should match the CSS animation duration
+  };
+
   // form submit handler
   const formSubmit = async (e: React.FormEvent) => {
     e.preventDefault(); // prevent default form submission behavior
+
+    // check if customerId already exists
+    const exists = customers.some((c) => c.customerId === customerId);
+    if (exists) {
+      setShowForm(false);
+      setMessage("⚠️ Customer ID already exists!");
+      setIsPositive(false);
+      setShowMessage(true);
+      setTimeout(() => {
+        setShowMessage(false);
+        setShowForm(true);
+      }, 4000);
+      return;
+    }
+
     const customerData = {
       customerId,
       companyName,
@@ -73,7 +97,7 @@ const CustomerAdd: React.FC<CustomerAddProps> = ({
     );
 
     if (hasEmpty) {
-      // 💥 эффект "shake"
+      // 💥 shake effect
       setIsError(true);
       setTimeout(() => setIsError(false), 400);
 
@@ -91,26 +115,14 @@ const CustomerAdd: React.FC<CustomerAddProps> = ({
 
     try {
       const response = await CustomerService.create(customerData);
+      console.log(response);
 
-      if (response.status >= 200 && response.status < 300) {
-        setMessage(`✅ Added new customer: ${customerData.companyName}`);
-        setIsPositive(true);
-        setShowMessage(true);
-        setTimeout(() => setShowMessage(false), 5000);
+      setMessage(`✅ Added new customer: ${customerData.companyName}`);
+      setIsPositive(true);
+      setShowMessage(true);
 
-        setIsClosing(true);
-        setTimeout(() => {
-          setIsClosing(false);
-          setShowForm(false);
-        }, 300);
-
-        reload(!x);
-      } else {
-        setMessage("⚠️ Failed to add new customer.");
-        setIsPositive(false);
-        setShowMessage(true);
-        setTimeout(() => setShowMessage(false), 6000);
-      }
+      setTimeout(() => setShowMessage(false), 5000);
+      reload(!x);
     } catch (error) {
       const err = error as AxiosError;
       console.error("Error adding new customer:", err);
@@ -118,6 +130,8 @@ const CustomerAdd: React.FC<CustomerAddProps> = ({
       setIsPositive(false);
       setShowMessage(true);
       setTimeout(() => setShowMessage(false), 6000);
+    } finally {
+      closeForm();
     }
 
     // reset form fields
@@ -136,100 +150,92 @@ const CustomerAdd: React.FC<CustomerAddProps> = ({
 
   return (
     <>
-      <h3 className="customer-add-title" onClick={() => setShowForm(!showForm)}>
+      <h3
+        className={styles.customerAddTitle}
+        onClick={() => setShowForm(!showForm)}
+      >
         (+) Adding new customer
       </h3>
       {showForm && (
-        <div className="customer-modal-overlay">
+        <div className={styles.modalOverlay}>
           <div
-            className={`customer-modal ${isClosing ? "closing" : ""} ${
-              isError ? "shake" : ""
+            className={`${styles.modal} ${isClosing ? styles.closing : ""} ${
+              isError ? styles.shake : ""
             }`}
           >
-            <h2 style={{ color: "indigo" }}>Add New Customer</h2>
-            <form className="customer-add-form" onSubmit={formSubmit}>
-              <div className="customer-modal-input-block">
+            <h2 className={styles.customerAddFormTitle}>Add New Customer</h2>
+            <form className={styles.customerAddForm} onSubmit={formSubmit}>
+              <div className={styles.formGrid}>
                 <label>Customer ID:</label>
                 <input
                   type="text"
                   value={customerId}
                   onChange={(e) => setCustomerId(e.target.value)}
                 />
-              </div>
-              <div className="customer-modal-input-block">
+
                 <label>Company Name:</label>
                 <input
                   type="text"
                   value={companyName}
                   onChange={(e) => setCompanyName(e.target.value)}
                 />
-              </div>
-              <div className="customer-modal-input-block">
+
                 <label>Contact Name:</label>
                 <input
                   type="text"
                   value={contactName}
                   onChange={(e) => setContactName(e.target.value)}
                 />
-              </div>
-              <div className="customer-modal-input-block">
+
                 <label>Contact Title:</label>
                 <input
                   type="text"
                   value={contactTitle}
                   onChange={(e) => setContactTitle(e.target.value)}
                 />
-              </div>
-              <div className="customer-modal-input-block">
-                <label>Address:</label>
 
+                <label>Address:</label>
                 <input
                   type="text"
                   value={address}
                   onChange={(e) => setAddress(e.target.value)}
                 />
-              </div>
-              <div className="customer-modal-input-block">
+
                 <label>City:</label>
                 <input
                   type="text"
                   value={city}
                   onChange={(e) => setCity(e.target.value)}
                 />
-              </div>
-              <div className="customer-modal-input-block">
+
                 <label>Region:</label>
                 <input
                   type="text"
                   value={region}
                   onChange={(e) => setRegion(e.target.value)}
                 />
-              </div>
-              <div className="customer-modal-input-block">
+
                 <label>Postal Code:</label>
                 <input
                   type="text"
                   value={postalCode}
                   onChange={(e) => setPostalCode(e.target.value)}
                 />
-              </div>
-              <div className="customer-modal-input-block">
+
                 <label>Country:</label>
                 <input
                   type="text"
                   value={country}
                   onChange={(e) => setCountry(e.target.value)}
                 />
-              </div>
-              <div className="customer-modal-input-block">
+
                 <label>Phone:</label>
                 <input
                   type="text"
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
                 />
-              </div>
-              <div className="customer-modal-input-block">
+
                 <label>Fax:</label>
                 <input
                   type="text"
@@ -237,9 +243,22 @@ const CustomerAdd: React.FC<CustomerAddProps> = ({
                   onChange={(e) => setFax(e.target.value)}
                 />
               </div>
-              <br />
-              <button type="submit">Add Customer</button>{" "}
-              <button onClick={() => setShowForm(!showForm)}>Cancel</button>
+
+              <div className={styles.modalButtons}>
+                <button className={styles.btn + " " + styles.add} type="submit">
+                  Add Customer
+                </button>{" "}
+                <button
+                  className={styles.btn + " " + styles.cancel}
+                  onClick={() => {
+                    setShowForm(!showForm);
+                    setIsClosing(true);
+                    setTimeout(() => setIsClosing(false), 300);
+                  }}
+                >
+                  Cancel
+                </button>
+              </div>
             </form>
           </div>
         </div>

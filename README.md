@@ -1,48 +1,106 @@
-# NorthwindVite
+# 🌍 Northwind Full Stack Application
 
-This is a **React + TypeScript + Vite** learning project created as part of the course "React.js Application Development".  
-The project demonstrates working with components, forms, Axios requests to an API, and state management in React.
+## 🧩 Overview
 
-## 📦 Technologies
+This project is a **fully functional full stack web application**, developed as part of the Full Stack Developer program.  
+It combines a **React (Vite)** frontend and a **.NET 8 Web API** backend connected to an **Azure SQL Database**.  
+The app follows RESTful principles and uses **JWT authentication** for secure access.
 
-- **React 18** — for building user interfaces.
-- **TypeScript** — for type safety and more reliable code.
-- **Vite** — fast development server and build tool with HMR.
-- **Axios** — for HTTP requests.
-- **ESLint + Prettier** — for code linting and formatting.
+---
 
-## 🚀 Project Structure
+## 💻 Technologies Used
 
-- `src/components` — React components (e.g., `CustomerList`, `CustomerAdd`).
-- `src/services` — API interaction using Axios.
-- `src/App.tsx` — root component of the application.
-- `public/` — static files (favicon, icons, etc.).
+### 🔹 Frontend
 
-## 🔧 How to Run
+- React + Vite + TypeScript
+- Axios for API requests
+- Bootstrap & CSS styling
+- Azure Static Web Apps (deployment)
 
-1. Install dependencies:
+### 🔹 Backend
 
-```bash
-npm install
+- ASP.NET Core 8 Web API
+- Entity Framework Core
+- SQL Server (Azure SQL Database)
+- JWT Authentication & Authorization
+- Azure App Service (deployment)
 
-	2.	Start the development server:
+---
 
-npm run dev
+## ⚙️ Features
 
-	3.	Open the project in your browser at http://localhost:5173.
+✅ **JWT-based Login & Authentication**  
+✅ **Role-based Access Control**  
+✅ **CRUD operations** for:
 
-💻 Project Features
-	•	Adding, viewing, and filtering customers.
-	•	Interactive forms with validation.
-	•	Communication with server-side API (ASP.NET or other implementation).
-	•	Displaying success/error messages after operations.
+- Users
+- Customers
+- Products
 
-📚 Purpose
+✅ **Password confirmation validation** during user creation  
+✅ **Protected Routes** on the frontend  
+✅ **Dynamic feedback messages** (success & error)  
+✅ **Consistent UI with Navbar, Modal dialogs & Footer**
 
-The project is intended to reinforce skills in:
-	•	Working with React + TypeScript.
-	•	Organizing components and managing state.
-	•	Integrating a frontend application with a server-side API.
-	•	Debugging and handling HTTP request errors.
+---
 
+## 🔐 User Roles
+
+| Role      | AccessLevelID | Permissions                              |
+| --------- | ------------- | ---------------------------------------- |
+| **Admin** | 1             | Full access (Users, Customers, Products) |
+| **User**  | 2             | Limited access                           |
+
+---
+
+## 🌐 Live Demo
+
+| Component                  | URL                                                                                                                      |
+| -------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
+| 🎨 Frontend (React + Vite) | [https://ashy-sand-0e2743f03.3.azurestaticapps.net/](https://ashy-sand-0e2743f03.3.azurestaticapps.net/)                 |
+| ⚙️ Backend (Swagger UI)    | [https://nwbackendandy.azurewebsites.net/swagger/index.html](https://nwbackendandy.azurewebsites.net/swagger/index.html) |
+
+---
+
+## 🔑 Test Credentials
+
+```text
+Username: TestUser
+Password: test123
+
+
+⸻
+
+🧠 Learning Goals
+	•	Implement a full-stack CRUD application
+	•	Practice RESTful API integration between frontend and backend
+	•	Secure routes with JWT-based authentication
+	•	Deploy both client and server on Microsoft Azure
+
+⸻
+
+🧰 Project Structure
+
+/NorthwindVite      → React + Vite frontend
+/NWRestfulAPI       → ASP.NET Core backend (C#)
+/publish             → Deployed build output
+
+
+⸻
+
+🧑‍💻 Author
+
+Andrey Erokhin
+📍 Porvoo, Finland 🇫🇮
+🎓 Full Stack Developer Student — Careeria
+💼 GitHub: @andreygoit
+
+⸻
+
+🏁 Status
+
+✅ All requirements have been successfully implemented and tested.
+The application is fully deployed and operational on Azure.
+
+---
 ```

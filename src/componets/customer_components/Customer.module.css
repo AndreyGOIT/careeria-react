@@ -1,0 +1,292 @@
+/* src/components/customer_components/CustomerList.module.css */
+.customerListTitle {
+  text-align: center;
+  margin-top: 20px;
+  cursor: pointer;
+}
+
+.pulsing {
+  animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.customerListGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+  padding: 0 20px;
+}
+/* card styles */
+.customerCard {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 15px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+  transition: transform 0.2s;
+}
+
+.customerCardContent {
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 15px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  background-color: #f4f6f8;
+  transition: transform 0.2s;
+}
+.customerCardContent:hover {
+  transform: scale(1.03);
+}
+
+.customerCardTitle {
+  margin-bottom: 5px;
+  color: #2f5b87;
+  cursor: pointer;
+}
+
+.customerCardCloseBtn {
+  align-self: center;
+  background: none;
+  border: none;
+  font-size: 1rem;
+  cursor: pointer;
+  color: #888;
+  margin-bottom: 10px;
+}
+.customerCardCloseBtn:hover {
+  color: #555;
+}
+
+.customerCardLabel {
+  color: #2f5b87;
+}
+.customerCardBtn {
+  margin-top: 10px;
+  padding: 8px 12px;
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+.customerCardBtn:hover {
+  background-color: #c0392b;
+}
+.customerCardBtnEdit {
+  margin-top: 10px;
+  background-color: #4caf50;
+  color: white;
+  padding: 8px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.customerCardBtnEdit:hover {
+  background-color: #388e3c;
+}
+.customerSearchInput {
+  width: 100%;
+  max-width: 400px;
+  padding: 10px;
+  margin: 20px auto;
+  display: block;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+.customerSearchInput:focus {
+  border-color: #0077ff;
+  outline: none;
+}
+/* Add Customer Title */
+.customerAddTitle {
+  text-align: end;
+  margin-top: 20px;
+  cursor: pointer;
+  color: #2f5b87;
+}
+
+.customerAddForm,
+.customerEditForm {
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 15px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  background-color: #f4f6f8;
+  max-width: 400px;
+  margin: 10px auto;
+}
+
+/* Grid layout */
+.formGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.8rem 1rem;
+  align-items: center;
+}
+
+.customerModalInputBlock {
+  margin-bottom: 5px;
+}
+
+.customerModalInputBlock label {
+  display: block;
+}
+
+.customerModalInputBlock input {
+  width: 100%;
+  padding: 6px;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.customerAddFormTitle {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #2f5b87;
+  cursor: pointer;
+}
+.customerAddFormTitle:hover {
+  text-decoration: underline;
+}
+
+/* modal styles */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+.modal {
+  background: white;
+  padding: 25px 30px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  text-align: center;
+  animation: modalIn 0.3s ease;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+@keyframes modalIn {
+  from {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+.modalContent {
+  padding: 1rem;
+  background-color: #f4f6f8;
+}
+.modalTitle {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  color: #222;
+  font-size: 1.5rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+/* smooth disappearing */
+.closing {
+  opacity: 0;
+  transform: scale(0.95);
+}
+
+/* 💥 vibration effect when error */
+.shake {
+  animation: shake 0.4s ease;
+}
+
+@keyframes shake {
+  0% {
+    transform: translateX(0);
+  }
+  20% {
+    transform: translateX(-8px);
+  }
+  40% {
+    transform: translateX(8px);
+  }
+  60% {
+    transform: translateX(-6px);
+  }
+  80% {
+    transform: translateX(6px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+.modalButtons {
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-around;
+}
+
+.btn {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.cancel {
+  background-color: #ccc;
+}
+
+.cancel:hover {
+  background-color: #999;
+}
+
+.delete {
+  background-color: #e74c3c;
+  color: white;
+}
+
+.delete:hover {
+  background-color: #c0392b;
+}
+
+.save {
+  background-color: #0077ff;
+  color: #fff;
+}
+
+.save:hover {
+  background-color: #005fcb;
+}
+
+.add {
+  background-color: #2f5b87;
+  color: white;
+}
+.add:hover {
+  background-color: #244a6c;
+}

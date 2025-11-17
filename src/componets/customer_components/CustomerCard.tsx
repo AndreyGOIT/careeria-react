@@ -1,6 +1,6 @@
 import { useState } from "react";
 import type { Customer as CustomerType } from "../../types/CustomerType";
-// import CustomerService from "../services/CustomerService";
+import styles from "./Customer.module.css";
 
 interface CustomerCardProps {
   customer: CustomerType;
@@ -16,88 +16,69 @@ const CustomerCard = ({
   onEditRequest,
 }: CustomerCardProps) => {
   const [showDetails, setShowDetails] = useState(false);
-  // const [isDeleting, setIsDeleting] = useState(false);
-
-  // Handler for deleting a customer
-  // const handleDelete = async () => {
-  //   if (isDeleting) return; // Prevent multiple deletions
-  //   if (!window.confirm(`Delete ${customer.companyName}?`)) return;
-
-  //   setIsDeleting(true);
-  //   try {
-  //     await CustomerService.remove(customer.customerId);
-  //     console.log("Customer deleted");
-  //     onDelete(); // Notify parent to refresh the list
-  //   } catch (error) {
-  //     console.error("Error deleting customer:", error);
-  //   } finally {
-  //     setIsDeleting(false);
-  //   }
-  // };
 
   return (
     <>
-      <div className="customer-card">
+      <div className={styles.customerCard}>
         {!showDetails ? (
           <h3
             onClick={() => setShowDetails(!showDetails)}
-            className="customer-card-title"
+            className={styles.customerCardTitle}
           >
             {customer.companyName}
           </h3>
         ) : (
           <button
             onClick={() => setShowDetails(!showDetails)}
-            className="customer-card-title clickable"
+            className={styles.customerCardCloseBtn}
           >
-            [ x ] Close
+            [x] close details
           </button>
         )}
         {showDetails && (
-          <div key={customer.customerId} className="customer-card">
+          <div key={customer.customerId} className={styles.customerCardContent}>
             <p>
-              <strong className="customer-card-label">Contact:</strong>{" "}
+              <strong className={styles.customerCardLabel}>Contact:</strong>{" "}
               {customer.contactName} ({customer.contactTitle})
             </p>
             <p>
-              <strong className="customer-card-label">Address:</strong>{" "}
+              <strong className={styles.customerCardLabel}>Address:</strong>{" "}
               {customer.address}, {customer.city} {customer.postalCode}
             </p>
             {customer.region && (
               <p>
-                <strong className="customer-card-label">Region:</strong>{" "}
+                <strong className={styles.customerCardLabel}>Region:</strong>{" "}
                 {customer.region}
               </p>
             )}
             <p>
-              <strong className="customer-card-label">Country:</strong>{" "}
+              <strong className={styles.customerCardLabel}>Country:</strong>{" "}
               {customer.country}
             </p>
             <p>
-              <strong className="customer-card-label">Phone:</strong>{" "}
+              <strong className={styles.customerCardLabel}>Phone:</strong>{" "}
               {customer.phone}
             </p>
             {customer.fax && (
               <p>
-                <strong className="customer-card-label">Fax:</strong>{" "}
+                <strong className={styles.customerCardLabel}>Fax:</strong>{" "}
                 {customer.fax}
               </p>
             )}
-            <button
-              className="customer-card-btn-edit"
-              onClick={() => onEditRequest(customer)}
-            >
-              Edit
-            </button>
-            <button
-              className="customer-card-btn"
-              // onClick={handleDelete}
-              onClick={() => onDeleteRequest(customer)}
-              // disabled={isDeleting}
-            >
-              Delete
-              {/* {isDeleting ? "Deleting..." : "Delete"} */}
-            </button>
+            <div className={styles.modalButtons}>
+              <button
+                className={styles.customerCardBtnEdit}
+                onClick={() => onEditRequest(customer)}
+              >
+                📝 Edit
+              </button>
+              <button
+                className={styles.customerCardBtn}
+                onClick={() => onDeleteRequest(customer)}
+              >
+                Delete
+              </button>
+            </div>
           </div>
         )}
       </div>

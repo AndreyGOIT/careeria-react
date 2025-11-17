@@ -1,4 +1,5 @@
-// Message.tsx
+// src/componets/Message.tsx
+
 export type MessageProps = {
   isPositive: boolean;
   message: string;

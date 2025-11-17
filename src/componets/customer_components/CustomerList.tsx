@@ -1,12 +1,14 @@
 import { useState, useEffect } from "react";
 import CustomerService from "../../services/CustomerService";
 import type { Customer } from "../../types/CustomerType";
-import "../../styles/CustomerList.css";
+import styles from "./Customer.module.css";
 import CustomerCard from "./CustomerCard";
 import CustomerAdd from "./CustomerAdd";
+import CustomerEdit from "./CustomerEdit";
 
 import type { Dispatch, SetStateAction } from "react";
-import CustomerEdit from "./CustomerEdit";
+import ConfirmDeleteModal from "../ui/confirm/ConfirmDeleteModal";
+import LoaderOverlay from "../ui/loaderOverlay/LoaderOverlay";
 
 interface CustomerListProps {
   setMessage: Dispatch<SetStateAction<string>>;
@@ -19,6 +21,7 @@ const CustomerList: React.FC<CustomerListProps> = ({
   setShowMessage,
   setIsPositive,
 }) => {
+  const [loading, setLoading] = useState(true);
   const [customers, setCustomers] = useState([]);
   const [show, setShow] = useState(false);
   // state to trigger re-fetching of customers
@@ -34,13 +37,11 @@ const CustomerList: React.FC<CustomerListProps> = ({
 
   const handleEditRequest = (customer: Customer) => {
     setEditingCustomer(customer);
-    console.log("Editing customer: ", customer);
     setShowEditModal(true);
   };
 
   const handleDeleteRequest = (customer: Customer) => {
     setSelectedCustomer(customer);
-    console.log("Selected customer: ", customer);
     setShowConfirm(true);
   };
 
@@ -64,18 +65,22 @@ const CustomerList: React.FC<CustomerListProps> = ({
       .then((data) => setCustomers(data))
       .catch((error) => {
         console.error("Error fetching customers:", error);
-      });
+      })
+      .finally(() => setLoading(false));
   }, [x, show]);
 
-  return (
+  return loading ? (
+    <LoaderOverlay />
+  ) : (
     <>
       <h2
-        className={`customer-list-title ${show ? "" : "pulsing"}`}
+        className={`${styles.customerListTitle} ${show ? "" : styles.pulsing}`}
         onClick={() => setShow(!show)}
       >
         Customers
       </h2>
       <CustomerAdd
+        customers={customers}
         x={x}
         reload={reload}
         setMessage={setMessage}
@@ -83,28 +88,28 @@ const CustomerList: React.FC<CustomerListProps> = ({
         setIsPositive={setIsPositive}
       />
 
-      {/* Search input - functionality not implemented yet */}
+      {/* Search input */}
       <input
         type="text"
+        name="customerSearch"
         placeholder="Search by company name..."
-        className="customer-search-input"
+        className={styles.customerSearchInput}
         value={search}
         onChange={({ target }) => setSearch(target.value)}
       />
       <hr />
       {/* customers list */}
       {show && (
-        <div className="customer-list-grid">
+        <div className={styles.customerListGrid}>
           {customers &&
             customers.map((c: Customer) => {
               if (
                 c.companyName.toLowerCase().indexOf(search.toLowerCase()) === -1
               ) {
-                return null; // не отображать, если не совпадает с поиском
+                return null; // does not match search, skip rendering
               }
 
               if (c.companyName.toLowerCase().includes(search.toLowerCase())) {
-                // console.log("Found:", c.companyName);
                 return (
                   <CustomerCard
                     key={c.customerId}
@@ -131,26 +136,13 @@ const CustomerList: React.FC<CustomerListProps> = ({
         />
       )}
 
-      {/* Confirmation Modal */}
-      {showConfirm && (
-        <div className="modal-overlay">
-          <div className="modal">
-            <h3>Confirm Deletion</h3>
-            <p>Delete {selectedCustomer?.companyName}?</p>
-            <div className="modal-buttons">
-              <button
-                className="btn cancel"
-                onClick={() => setShowConfirm(false)}
-              >
-                Cancel
-              </button>
-              <button className="btn delete" onClick={handleConfirmDelete}>
-                Delete
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      {/* Delete Confirmation Modal */}
+      <ConfirmDeleteModal
+        show={showConfirm}
+        itemName={selectedCustomer?.companyName ?? ""}
+        onConfirm={handleConfirmDelete}
+        onCancel={() => setShowConfirm(false)}
+      />
     </>
   );
 };

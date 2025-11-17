@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import styles from "../../styles/CustomerEdit.module.css";
+import styles from "./Customer.module.css";
 import CustomerService from "../../services/CustomerService";
 import type { Dispatch, SetStateAction } from "react";
 import type { Customer } from "../../types/CustomerType";
@@ -70,18 +70,11 @@ const CustomerEdit: React.FC<CustomerEditProps> = ({
       fax: fax || null,
     };
     try {
-      const response = await CustomerService.update(
-        customerId,
-        updatedCustomer
-      );
+      await CustomerService.update(customerId, updatedCustomer);
 
-      if (response.status >= 200 && response.status < 300) {
-        setMessage(`✅ Customer ${companyName} updated successfully!`);
-        setIsPositive(true);
-      } else {
-        setMessage(`⚠️ Error: ${response.statusText}`);
-        setIsPositive(false);
-      }
+      // Success
+      setMessage(`✅ Customer ${companyName} updated successfully!`);
+      setIsPositive(true);
     } catch (error) {
       console.error("Error updating customer:", error);
       setMessage(`❌ Error updating customer: ${error}`);
@@ -89,6 +82,7 @@ const CustomerEdit: React.FC<CustomerEditProps> = ({
     } finally {
       setShowMessage(true);
       setTimeout(() => setShowMessage(false), 5000);
+
       onClose();
       reload(!x);
     }
@@ -96,7 +90,7 @@ const CustomerEdit: React.FC<CustomerEditProps> = ({
   return (
     <div className={styles.modalOverlay}>
       <div className={styles.modal}>
-        <h2 className={styles.modalTitle}>Edit Customer</h2>
+        <h2 className={styles.modalTitle}>📝 Edit Customer</h2>
         <form className={styles.customerEditForm} onSubmit={formSubmit}>
           <div className={styles.formGrid}>
             <label>Customer ID:</label>
@@ -177,13 +171,13 @@ const CustomerEdit: React.FC<CustomerEditProps> = ({
             />
           </div>
 
-          <div className={styles.buttonRow}>
-            <button type="submit" className={styles.btnSave}>
+          <div className={styles.modalButtons}>
+            <button type="submit" className={styles.btn + " " + styles.save}>
               💾 Save
             </button>
             <button
               type="button"
-              className={styles.btnCancel}
+              className={styles.btn + " " + styles.cancel}
               onClick={onClose}
             >
               ✖ Cancel

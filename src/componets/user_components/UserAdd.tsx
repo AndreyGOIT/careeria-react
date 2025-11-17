@@ -1,10 +1,10 @@
-import { useState, useEffect } from "react";
-import "./UserAdd.css";
+import { useState } from "react";
 import UserService from "../../services/UserService";
 import type { AxiosError } from "axios";
 
 import type { Dispatch, SetStateAction } from "react";
 import type { User } from "../../types/UserType";
+import styles from "./User.module.css";
 import CryptoJS from "crypto-js";
 
 interface UserAddProps {
@@ -33,13 +33,11 @@ const UserAdd: React.FC<UserAddProps> = ({
     firstname: "",
     lastname: "",
     password: "",
-    accesslevel: 1,
+    confirmPassword: "",
+    accesslevel: 2,
   });
-
-  // Для проверки изменения showForm
-  useEffect(() => {
-    console.log("showForm changed:", showForm);
-  }, [showForm]);
+  // check if passwords match
+  const passwordsMatch = formData.password === formData.confirmPassword;
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -66,7 +64,8 @@ const UserAdd: React.FC<UserAddProps> = ({
       !formData.username ||
       !formData.firstname ||
       !formData.lastname ||
-      !formData.password
+      !formData.password ||
+      !formData.confirmPassword
     ) {
       closeForm();
       setMessage("⚠️ Please fill in all fields.");
@@ -76,6 +75,13 @@ const UserAdd: React.FC<UserAddProps> = ({
         setShowMessage(false);
         setShowForm(true);
       }, 6000);
+      return;
+    }
+
+    if (!passwordsMatch) {
+      setMessage("❗ Passwords do not match.");
+      setIsPositive(false);
+      setShowMessage(true);
       return;
     }
 
@@ -92,23 +98,18 @@ const UserAdd: React.FC<UserAddProps> = ({
 
     try {
       const response = await UserService.create(newUser);
+      console.log(response);
 
-      if (response.status === 201) {
-        setMessage(`✅ New user "${newUser.username}" created!`);
-        setIsPositive(true);
-        setShowMessage(true);
+      setMessage(`✅ New user "${newUser.username}" created!`);
+      setIsPositive(true);
+      setShowMessage(true);
 
-        setTimeout(() => setShowMessage(false), 5000);
-        reload(!x);
-      } else {
-        setMessage(`⚠️ Error: ${response.statusText}`);
-        setIsPositive(false);
-        setShowMessage(true);
-        setTimeout(() => setShowMessage(false), 6000);
-      }
+      setTimeout(() => setShowMessage(false), 3000);
+      reload(!x);
     } catch (error) {
       const err = error as AxiosError;
-      setMessage(err.message || "❌ Failed to add user");
+      console.error("Error adding new user:", err);
+      setMessage("❌ Failed to add user");
       setIsPositive(false);
       setShowMessage(true);
       setTimeout(() => setShowMessage(false), 6000);
@@ -116,31 +117,28 @@ const UserAdd: React.FC<UserAddProps> = ({
       closeForm();
     }
 
-    // очистка формы
+    // clear form data
     setFormData({
       username: "",
       firstname: "",
       lastname: "",
       password: "",
+      confirmPassword: "",
       accesslevel: 1,
     });
   };
 
   return (
     <>
-      <h3 className="user-add-title" onClick={() => setShowForm(true)}>
+      <h3 className={styles.userAddTitle} onClick={() => setShowForm(true)}>
         (+) Adding new user
       </h3>
       {showForm && (
-        <div
-          className={`user-modal-overlay ${
-            isClosing ? "modal-close" : "modal-open"
-          }`}
-        >
-          <div className="user-modal">
-            <h2>Add New User</h2>
-            <form className="user-add-form" onSubmit={formSubmit}>
-              <div>
+        <div className={styles.modalOverlay}>
+          <div className={`${styles.modal} ${isClosing ? styles.closing : ""}`}>
+            <h2 className={styles.userAddFormTitle}>Add New User</h2>
+            <form className={styles.userAddForm} onSubmit={formSubmit}>
+              <div className={styles.formGrid}>
                 <label>Username:</label>
                 <input
                   type="text"
@@ -148,8 +146,7 @@ const UserAdd: React.FC<UserAddProps> = ({
                   value={formData.username}
                   onChange={handleChange}
                 />
-              </div>
-              <div>
+
                 <label>First Name:</label>
                 <input
                   type="text"
@@ -157,8 +154,7 @@ const UserAdd: React.FC<UserAddProps> = ({
                   value={formData.firstname}
                   onChange={handleChange}
                 />
-              </div>
-              <div>
+
                 <label>Last Name:</label>
                 <input
                   type="text"
@@ -166,39 +162,62 @@ const UserAdd: React.FC<UserAddProps> = ({
                   value={formData.lastname}
                   onChange={handleChange}
                 />
-              </div>
-              <div>
+
                 <label>Password:</label>
                 <input
-                  type="text"
+                  type="password"
                   name="password"
                   value={formData.password}
                   onChange={handleChange}
                 />
-              </div>
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  marginTop: "10px",
-                }}
-              >
+
+                <label>Confirm Password:</label>
+                <input
+                  type="password"
+                  name="confirmPassword"
+                  value={formData.confirmPassword}
+                  onChange={handleChange}
+                />
+
                 <label>Accesslevel:</label>
                 <select
                   name="accesslevel"
                   value={formData.accesslevel}
                   onChange={handleChange}
                 >
-                  <option value={1}>Admin</option>
                   <option value={2}>User</option>
+                  <option value={1}>Admin</option>
                 </select>
               </div>
-              <br />
-              <button type="submit">Add User</button>{" "}
-              <button type="button" onClick={closeForm}>
-                Cancel
-              </button>
+              {!passwordsMatch ? (
+                <>
+                  <label> </label>
+                  <p style={{ color: "red", fontSize: "0.9rem" }}>
+                    Passwords do not match
+                  </p>
+                </>
+              ) : (
+                <>
+                  <label> </label>
+                  <p>&nbsp;</p>
+                </>
+              )}
+              <div className={styles.modalButtons}>
+                <button
+                  className={styles.btn + " " + styles.add}
+                  type="submit"
+                  disabled={!passwordsMatch}
+                >
+                  Add User
+                </button>{" "}
+                <button
+                  className={styles.btn + " " + styles.cancel}
+                  type="button"
+                  onClick={closeForm}
+                >
+                  Cancel
+                </button>
+              </div>
             </form>
           </div>
         </div>
