@@ -65,6 +65,11 @@ The app follows RESTful principles and uses **JWT authentication** for secure ac
 ## 🔑 Test Credentials
 
 ```text
+Role Admin:
+Username: TestAdmin
+Password: test123
+
+Role User:
 Username: TestUser
 Password: test123
 
